@@ -1,0 +1,21 @@
+---
+- name: Use tracer to reboot this node
+  hosts: all
+  # ^ you might want to change that to some other value
+  gather_facts: yes
+  become: yes
+
+  tasks:
+  - name: See if machine needs reboot by running tracer
+    shell: tracer
+    register: tracer_results
+    ignore_errors: yes
+
+  - name: Show tracer results
+    debug:
+      var: tracer_results 
+
+  - name: Show only machines needing reboot
+    debug:
+      msg: "Reboot this machine: {{ inventory_hostname }}"
+    when: tracer_results.rc != 0
