@@ -10,6 +10,7 @@
     shell: tracer
     register: tracer_results
     ignore_errors: yes
+    changed_when: false
 
   - name: Show tracer results
     debug:
@@ -19,3 +20,4 @@
     debug:
       msg: "Reboot this machine: {{ inventory_hostname }}"
     when: tracer_results.rc != 0
+    changed_when: true
